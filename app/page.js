@@ -1,7 +1,6 @@
-import Hero from "@/components/LandingPage/Hero";
 import Header from "@/components/LandingPage/Header";
+import Hero from "@/components/LandingPage/Hero";
 import Footer from "@/components/LandingPage/Footer";
-
 
 export default function Home() {
   return (

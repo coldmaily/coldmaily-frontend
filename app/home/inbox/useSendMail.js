@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { sendMailFormData } from "@/libapi/api";
+import { toast } from "react-hot-toast";
 
 const categoryMap = {
   job_followup: "Job Application",
@@ -115,12 +116,12 @@ export function useSendMail(onSuccessClose = null) {
       // ✅ USE API HELPER HERE
       await sendMailFormData(formData);
 
-      alert("✅ Email sent!");
+      toast.success("Email sent!");
       router.refresh();
       if (onSuccessClose) onSuccessClose();
     } catch (error) {
       console.error("POST error:", error);
-      alert("❌ " + error.message);
+      toast.error("❌ " + error.message);
     } finally {
       setLoading(false);
     }

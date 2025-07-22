@@ -1,4 +1,4 @@
-import { fetcher } from "@/libapi/api";
+import { fetcher, postFetcher } from "@/libapi/api";
 
 export async function getMailCount() {
   return fetcher("/dashboard/mail-count");
@@ -13,15 +13,19 @@ export async function getUpcomingMails() {
 }
 
 export async function getNotifications() {
-    return fetcher("/notifications")
+    return fetcher("/notifications");
 }
 
 export async function markNotificationAsRead(id) {
     return fetcher(`/notifications/${id}/read`, { method: "PUT",});
   }
 
-  export async function markAllNotificationsAsRead() {
+export async function markAllNotificationsAsRead() {
     return fetcher(`/notifications/mark-all-read`, {method: "PUT",});
   }
+
+export async function logout() {
+  return postFetcher('/logout');
+}
   
   
