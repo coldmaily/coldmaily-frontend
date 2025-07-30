@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { sendMailFormData } from "@/libapi/api";
 import { toast } from "react-hot-toast";
 
-const categoryMap = {
+// Exported map for dropdown use
+export const categoryMap = {
   job_followup: "Job Application",
   freelancer_outreach: "Freelancer Outreach",
   referral_request: "Referral Request",
@@ -24,6 +25,16 @@ const categoryMap = {
   feedback_request: "Feedback Request",
 };
 
+// Exported strategy map
+export const strategyMap = {
+  standard: "Standard (2, 5, 8, 12...)",
+  every_1: "Every 1 day",
+  every_2: "Every 2 days",
+  every_3: "Every 3 days",
+  every_5: "Every 5 days",
+  every_7: "Every 7 days",
+};
+
 export function useSendMail(onSuccessClose = null) {
   const [form, setForm] = useState({
     to_email: "",
@@ -37,7 +48,7 @@ export function useSendMail(onSuccessClose = null) {
   });
 
   const [attachments, setAttachments] = useState([]);
-  const [uploadingFiles, setUploadingFiles] = useState([]); // ✅ Add this
+  const [uploadingFiles, setUploadingFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -51,44 +62,33 @@ export function useSendMail(onSuccessClose = null) {
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files || []);
-    if (files.length === 0) return;
+    if (!files.length) return;
 
     setAttachments((prev) => [...prev, ...files]);
-    setForm((prev) => ({
-      ...prev,
-      is_attachment: true,
-    }));
+    setForm((prev) => ({ ...prev, is_attachment: true }));
   };
 
   const handleRemoveFile = (indexToRemove) => {
-    setAttachments((prev) => {
-      const updated = prev.filter((_, i) => i !== indexToRemove);
-      return updated;
-    });
-
-    setForm((prev) => ({
-      ...prev,
-      is_attachment: attachments.length > 1, // ✅ set to false if no attachments left
-    }));
+    const updated = attachments.filter((_, i) => i !== indexToRemove);
+    setAttachments(updated);
+    setForm((prev) => ({ ...prev, is_attachment: updated.length > 0 }));
   };
 
   const formatFileSize = (bytes) => {
     if (bytes < 1024) return `${bytes} B`;
-    else if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-    else return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
   const handleSend = async () => {
     setLoading(true);
-
     try {
       const count = parseInt(form.no_of_follow_up || "0", 10);
       let delays = [];
 
       if (form.follow_up_strategy === "standard") {
-        delays = Array.from({ length: count }, (_, i) =>
-          [2, 5, 8, 12, 16, 20][i] || (i === 0 ? 2 : delays[i - 1] + 4)
-        );
+        const standardDelays = [2, 5, 8, 12, 16, 20];
+        delays = standardDelays.slice(0, count);
       } else if (form.follow_up_strategy.startsWith("every_")) {
         const interval = parseInt(form.follow_up_strategy.split("_")[1], 10);
         delays = Array.from({ length: count }, (_, i) => interval * (i + 1));
@@ -113,14 +113,13 @@ export function useSendMail(onSuccessClose = null) {
         formData.append("attachments", file);
       });
 
-      // ✅ USE API HELPER HERE
       await sendMailFormData(formData);
 
-      toast.success("Email sent!");
+      toast.success("Email sent successfully!");
       router.refresh();
       if (onSuccessClose) onSuccessClose();
     } catch (error) {
-      console.error("POST error:", error);
+      console.error("Send mail failed:", error);
       toast.error("❌ " + error.message);
     } finally {
       setLoading(false);
@@ -129,6 +128,7 @@ export function useSendMail(onSuccessClose = null) {
 
   return {
     form,
+    setForm,
     attachments,
     loading,
     uploadingFiles,
@@ -137,6 +137,5 @@ export function useSendMail(onSuccessClose = null) {
     handleFileChange,
     handleRemoveFile,
     formatFileSize,
-    setForm,
   };
 }

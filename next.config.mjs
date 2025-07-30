@@ -1,9 +1,28 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-      domains: ['lh3.googleusercontent.com'], // Google profile picture domain
-    },
-  };
-  
-  export default nextConfig;
-  
+  images: {
+    domains: ['lh3.googleusercontent.com'], // Google profile picture domain
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/mails',
+        destination: '/home/mails',
+      },
+      {
+        source: '/campaigns',
+        destination: '/home/campaigns',
+      },
+      {
+        source: '/templates',
+        destination: '/home/templates',
+      },
+      {
+        source: '/scheduler',
+        destination: '/home/scheduler',
+      },
+    ];
+  },
+};
+
+export default nextConfig;

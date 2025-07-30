@@ -11,10 +11,10 @@ import { getNotifications } from "@/libapi/dashboard";
 
 const navItems = [
   { name: "Dashboard", path: "/home" },
-  { name: "Inbox", path: "/home/inbox" },
-  { name: "Campaigns", path: "/home/campaigns" },
-  { name: "Templates", path: "/home/templates" },
-  { name: "Scheduler", path: "/home/scheduler" },
+  { name: "Mails", path: "/mails" },
+  { name: "Campaigns", path: "/campaigns" },
+  { name: "Templates", path: "/templates" },
+  { name: "Scheduler", path: "/scheduler" },
 ];
 
 export default function HomeLayout({ children }) {

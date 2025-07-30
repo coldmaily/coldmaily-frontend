@@ -1,15 +1,28 @@
 'use client';
-import { useEffect, useState } from 'react';
+
+import { useEffect, useRef, useState } from 'react';
 import { getRecentMails, getUpcomingMails } from '@/libapi/dashboard.js';
 import MailTableCard from './MailTableCard';
-import Skeleton from "@/components/Skeleton"; // 🧠 Create if not already done
+import Skeleton from "@/components/Skeleton";
+import useMailStore from './mailStore';
 
 export default function DashboardMails() {
-  const [recentMails, setRecentMails] = useState([]);
-  const [upcomingMails, setUpcomingMails] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const {
+    recentMails,
+    upcomingMails,
+    setRecentMails,
+    setUpcomingMails,
+  } = useMailStore();
+
+  const [loading, setLoading] = useState(false);
+  const hasFetchedRef = useRef(false);
 
   useEffect(() => {
+    if (hasFetchedRef.current) return;
+  
+    hasFetchedRef.current = true;
+    setLoading(true);
+  
     async function fetchData() {
       try {
         const [recent, upcoming] = await Promise.all([
@@ -24,9 +37,9 @@ export default function DashboardMails() {
         setLoading(false);
       }
     }
-
+  
     fetchData();
-  }, []);
+  }, []); // ✅ fixed: empty array ensures it's only called once on mount  
 
   if (loading) {
     return (

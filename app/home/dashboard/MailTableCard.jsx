@@ -1,6 +1,10 @@
-const { formatDateTime } = require("@/utils/formatDateTime");
+"use client";
+import { useRouter } from "next/navigation";
+import { formatDateTime } from "@/utils/formatDateTime";
 
 export default function MailTableCard({ title, data }) {
+  const router = useRouter();
+
   const getStatusColor = (status) => {
     switch (status) {
       case "sent":
@@ -14,6 +18,10 @@ export default function MailTableCard({ title, data }) {
       default:
         return "bg-gray-100 text-gray-800";
     }
+  };
+
+  const handleRowClick = (id) => {
+    router.push(`/home/mails/${id}`);
   };
 
   return (
@@ -31,7 +39,8 @@ export default function MailTableCard({ title, data }) {
         data.map((item, idx) => (
           <div
             key={idx}
-            className="grid grid-cols-4 text-sm py-2 border-b border-gray-200 gap-15 text-black "
+            className="grid grid-cols-4 text-sm py-2 border-b border-gray-200 gap-15 text-black cursor-pointer hover:bg-gray-50 transition"
+            onClick={() => handleRowClick(item.mail_id)} // <- Assuming item.id is the mail ID
           >
             <span>{item.subject}</span>
             <span>{item.email}</span>

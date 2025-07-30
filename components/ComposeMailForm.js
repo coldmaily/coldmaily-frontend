@@ -1,6 +1,6 @@
 "use client";
 
-import { useSendMail } from "@/app/home/inbox/useSendMail";
+import { useSendMail } from "@/app/home/dashboard/useSendMail";
 import { X, Minus, Maximize, ImageIcon, Loader2, Paperclip } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 
