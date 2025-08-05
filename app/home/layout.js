@@ -5,8 +5,8 @@ import { Bell } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { Toaster } from "react-hot-toast";
 import Link from "next/link";
-import NotificationsDropdown from "@/components/NoticationDropdown";
-import ProfileDropdown from "@/components/ProfileDropdown"; // ✅ Import here
+import NotificationsDropdown from "@/components/helper/NoticationDropdown";
+import ProfileDropdown from "@/components/helper/ProfileDropdown"; // ✅ Import here
 import { getNotifications } from "@/libapi/dashboard";
 
 const navItems = [

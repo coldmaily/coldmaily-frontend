@@ -28,8 +28,8 @@ export const categoryMap = {
 // Exported strategy map
 export const strategyMap = {
   standard: "Standard (2, 5, 8, 12...)",
-  every_1: "Every 1 day",
-  every_2: "Every 2 days",
+  every_1_day: "Every 1 day",
+  every_2_days: "Every 2 days",
   every_3: "Every 3 days",
   every_5: "Every 5 days",
   every_7: "Every 7 days",
@@ -99,12 +99,14 @@ export function useSendMail(onSuccessClose = null) {
           ? form.custom_mail_category
           : categoryMap[form.mail_category] || "General";
 
+      const strategy = strategyMap[form.follow_up_strategy] || "None";
+
       const formData = new FormData();
       formData.append("to_email", form.to_email);
       formData.append("subject", form.subject);
       formData.append("body", form.body);
       formData.append("no_of_follow_up", String(count));
-      formData.append("follow_up_strategy", form.follow_up_strategy);
+      formData.append("follow_up_strategy",strategy);
       formData.append("follow_up_delays", JSON.stringify(delays));
       formData.append("category", category);
       formData.append("is_attachment", form.is_attachment ? "true" : "false");
