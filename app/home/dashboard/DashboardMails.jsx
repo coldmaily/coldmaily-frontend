@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { getRecentMails, getUpcomingMails } from '@/libapi/dashboard.js';
 import MailTableCard from './MailTableCard';
-import Skeleton from "@/components/Skeleton";
+import Skeleton from "@/components/helper/Skeleton";
 import useMailStore from './mailStore';
 
 export default function DashboardMails() {

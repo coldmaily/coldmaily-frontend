@@ -124,7 +124,7 @@ export default function MailDetail({ mail }) {
                   </span>
                   <div className="flex items-center gap-10">
                     <span className="text-xs text-gray-500 font-medium">
-                      {fu.sent_at
+                      {fu.sent_at && fu.sent_at !== "None"
                         ? `${formatDateTime(fu.sent_at)}`
                         : fu.scheduled_for
                         ? `${formatDateTime(fu.scheduled_for)}`

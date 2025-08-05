@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ActionCard, StatCard } from "@/components/DashboardCard";
+import { ActionCard, StatCard } from "@/components/helper/DashboardCard";
 import { Send, Bot, Rocket, MailPlus } from "lucide-react";
-import ComposeMailForm from "@/components/ComposeMailForm";
+import ComposeMailForm from "@/components/helper/ComposeMailForm";
 
 export default function DashboardCards({ totalMails, followUps }) {
   const router = useRouter();

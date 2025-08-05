@@ -1,6 +1,6 @@
 import React from "react";
 import MailCard from "./MailCard";
-import Skeleton from "@/components/Skeleton";
+import Skeleton from "@/components/helper/Skeleton";
 
 
 export default function MailList({ mails = [], loading = false }) {

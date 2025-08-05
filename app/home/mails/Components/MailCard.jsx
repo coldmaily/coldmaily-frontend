@@ -26,7 +26,7 @@ export default function MailCard({ mail }) {
             <span>{mail.body}</span>
           </div>
           <div className="ml-4 flex-shrink-0 text-xs text-gray-500 whitespace-nowrap">
-            {displayTime ? formatDateTime(displayTime) : ""}
+            {formatDateTime(displayTime)}
           </div>
         </div>
       </div>

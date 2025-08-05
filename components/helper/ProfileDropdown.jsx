@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { UserCircle } from "lucide-react";
 import Image from "next/image";
-import LogoutConfirmDialog from "@/components/LogoutConfirmDialog";
+import LogoutConfirmDialog from "@/components/helper/LogoutConfirmDialog";
 
 export default function ProfileDropdown({ user }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
