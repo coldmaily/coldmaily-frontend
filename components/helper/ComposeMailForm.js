@@ -61,9 +61,9 @@ export default function ComposeMailForm({ onClose, onMinimize, onMaximize }) {
           <button onClick={handleMinimize} className="text-gray-500 hover:bg-gray-100 p-1.5 rounded-full" title="Minimize">
             <Minus className="h-4 w-4" />
           </button>
-          <button onClick={onMaximize} className="text-gray-500 hover:bg-gray-100 p-1.5 rounded-full" title="Maximize">
+          {/* <button onClick={onMaximize} className="text-gray-500 hover:bg-gray-100 p-1.5 rounded-full" title="Maximize">
             <Maximize className="h-4 w-4" />
-          </button>
+          </button> */}
           <button onClick={onClose} className="text-gray-500 hover:bg-gray-100 hover:text-red-600 p-1.5 rounded-full" title="Discard draft">
             <X className="h-4 w-4" />
           </button>

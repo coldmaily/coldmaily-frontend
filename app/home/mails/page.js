@@ -1,26 +1,20 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import MailTab from "./Components/MailTab";
 import MailList from "./Components/MailList";
 import { useMailStore } from "./useMailStore";
-import { useState } from "react";
 
 export default function MyMailsPage() {
   const [tab, setTab] = useState("mails");
-  const { mailData, fetchMails, loading } = useMailStore();
+  const { mails, upcoming, recent, fetchTabData, loading } = useMailStore();
 
+  // Fetch data only for the active tab
   useEffect(() => {
-    if (!mailData) {
-      fetchMails(); // only fetch once if data is not already loaded
-    }
-  }, [mailData, fetchMails]);
+    fetchTabData(tab);
+  }, [tab, fetchTabData]);
 
-  const tabMap = {
-    mails: mailData?.mails || [],
-    upcoming: mailData?.upcoming || [],
-    recent: mailData?.recent || [],
-  };
+  const tabMap = { mails, upcoming, recent };
 
   return (
     <div className="w-full px-4">

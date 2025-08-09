@@ -98,6 +98,22 @@ export async function sendMailFormData(formData) {
   return requestWithAutoRefresh(url, options);
 }
 
+// ✅ PUT
+export async function putFetcher(endpoint, payload) {
+  const options = {
+    method: "PUT",
+    credentials: "include",
+    headers: {},
+  };
+
+  if (payload !== undefined) {
+    options.headers["Content-Type"] = "application/json";
+    options.body = JSON.stringify(payload);
+  }
+
+  return requestWithAutoRefresh(`${API_BASE_URL}${endpoint}`, options);
+}
+
 // Google OAuth helpers
 export function getGoogleLoginUrl() {
   return `${API_BASE_URL}/google/login`;

@@ -3,7 +3,7 @@ import MailCard from "./MailCard";
 import Skeleton from "@/components/helper/Skeleton";
 
 
-export default function MailList({ mails = [], loading = false }) {
+export default function MailList({ mails = [], loading = false, currentTab }) {
   if (loading) {
     return (
       <div className="space-y-3">
