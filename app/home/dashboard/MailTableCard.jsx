@@ -21,7 +21,7 @@ export default function MailTableCard({ title, data }) {
   };
 
   const handleRowClick = (id) => {
-    router.push(`/home/mails/${id}`);
+    router.push(`/mails/${id}`);
   };
 
   return (

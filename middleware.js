@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 export function middleware(request) {
   const token = request.cookies.get('app_refresh_token');
 
-  const protectedPaths = ['/home', '/profile', '/settings']; // Add your protected routes here
+  const protectedPaths = ['/home', '/profile', '/settings', '/mails']; // Add your protected routes here
   const isProtected = protectedPaths.some((path) =>
     request.nextUrl.pathname.startsWith(path)
   );

@@ -1,5 +1,5 @@
 // lib/mails.js
-import { fetcher } from "./api";
+import { fetcher, putFetcher } from "./api";
 
 // 🔄 Fetch all inbox-related data at once
 export async function getAllMails() {
@@ -16,6 +16,27 @@ export async function getAllMails() {
   };
 }
 
+// 📩 Get all mails (inbox)
+export async function getMails() {
+  return await fetcher("/mails");
+}
+
+// 📅 Get scheduled follow-up mails
+export async function getUpcomingMails() {
+  return await fetcher("/mails/scheduled-followups");
+}
+
+// ⏳ Get sent follow-up mails
+export async function getRecentMails() {
+  return await fetcher("/mails/sent-followups");
+}
+
+
 export async function getMailDetail(mail_id){
   return fetcher(`/mails/${mail_id}`)
 }
+
+export async function updateFollowUp(followup_id, payload) {
+  return putFetcher(`/mails/followup/${followup_id}`, payload);
+}
+

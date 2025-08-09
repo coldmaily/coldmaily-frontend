@@ -7,7 +7,7 @@ export default function MailCard({ mail }) {
   const displayTime = mail.sent_at || mail.scheduled_for || "";
 
   return (
-    <Link href={`/home/mails/${mail.mail_id}`} passHref>
+    <Link href={`/mails/${mail.mail_id}`} passHref>
       <div className="w-full p-4 mb-2 border rounded-xl shadow-sm transition overflow-hidden cursor-pointer hover:shadow-md hover:bg-blue-100">
         
         {/* Top line: to_email + status */}

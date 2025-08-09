@@ -3,9 +3,15 @@
 import { formatDateTime } from "@/utils/formatDateTime";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
+import { updateFollowUp } from "@/libapi/mail";
 
 export default function MailDetail({ mail }) {
   const router = useRouter();
+  const [followups, setFollowups] = useState(mail.followups || []);
+  const [editIndex, setEditIndex] = useState(null);
+  const [editText, setEditText] = useState("");
 
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
@@ -21,6 +27,34 @@ export default function MailDetail({ mail }) {
         return 'bg-gray-50 text-gray-700 border border-gray-200';
     }
   };
+
+  const handleEditClick = (index, message) => {
+    setEditIndex(index);
+    setEditText(message);
+  };
+
+  const handleSaveClick = async (fu, index) => {
+    try {
+      const res = await updateFollowUp(fu.followup_id, {
+        follow_up_message: editText, // ✅ match backend field
+      });
+  
+      // ✅ Show toast with message from API response
+      toast.success(res?.message || "Follow-up updated successfully");
+  
+      setFollowups((prev) =>
+        prev.map((item, idx) =>
+          idx === index ? { ...item, follow_up_message: editText } : item
+        )
+      );
+      setEditIndex(null);
+    } catch (error) {
+      console.error("Failed to update follow-up message", error);
+      toast.error(error?.message || "Failed to update follow-up");
+    }
+  };
+  
+  
 
   return (
     <div className="w-full px-4 py-1">
@@ -88,29 +122,48 @@ export default function MailDetail({ mail }) {
 
       {/* Body */}
       <div className="bg-white rounded-xl shadow-sm border p-5 mb-6 hover:shadow-md transition-shadow duration-200">
-        <div className="text-md font-semibold mb-3 text-gray-800 border-b border-gray-100 pb-2">Message</div>
+        <div className="text-md font-semibold mb-3 text-gray-800 border-b border-gray-100 pb-2">
+          Message
+        </div>
         <div
           className="text-sm text-gray-800 whitespace-pre-line leading-relaxed"
           dangerouslySetInnerHTML={{ __html: mail.body }}
         />
+
+        {/* Attachments (if any) */}
+        {mail.attachments && mail.attachments.length > 0 && (
+          <div className="mt-5 bg-gray-50 rounded-lg border border-gray-200 p-2 space-y-2 w-auto inline-block">
+            {mail.attachments.map((att, index) => (
+              <div
+                key={index}
+                className="flex items-center gap-2 truncate"
+              >
+                <span className="truncate text-gray-800">{att.filename}</span>
+                <span className="text-gray-700 text-xs">{formatFileSize(att.size)}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Follow-ups */}
       <div>
-        <div className="text-md font-semibold mb-3 text-gray-800">Follow-Ups 
-          {mail.followups?.length > 0 && (
+        <div className="text-md font-semibold mb-3 text-gray-800">
+          Follow-Ups
+          {followups.length > 0 && (
             <span className="ml-2 text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium">
-              {mail.followups.length}
+              {followups.length}
             </span>
           )}
         </div>
-        {mail.followups?.length === 0 ? (
+
+        {followups.length === 0 ? (
           <div className="text-sm text-gray-500 bg-gray-50 p-4 rounded-lg border border-dashed border-gray-300 text-center">
             No follow-ups scheduled
           </div>
         ) : (
           <ul className="space-y-3">
-            {mail.followups.map((fu, idx) => (
+            {followups.map((fu, idx) => (
               <li
                 key={fu.followup_id}
                 className="border border-gray-200 bg-white rounded-lg shadow-sm p-4 hover:shadow-md hover:border-gray-300 transition-all duration-200"
@@ -122,30 +175,88 @@ export default function MailDetail({ mail }) {
                     </span>
                     Follow-up
                   </span>
-                  <div className="flex items-center gap-10">
-                    <span className="text-xs text-gray-500 font-medium">
-                      {fu.sent_at && fu.sent_at !== "None"
-                        ? `${formatDateTime(fu.sent_at)}`
-                        : fu.scheduled_for
-                        ? `${formatDateTime(fu.scheduled_for)}`
-                        : "Not scheduled"}
-                    </span>
-                    <span className={`text-xs px-2 py-1 rounded-full font-medium ${getStatusColor(fu.status)}`}>
-                      {fu.status}
-                    </span>
-                    <button className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-all duration-200 text-xs font-medium">
-                      Edit
-                    </button>
+
+                  <div className="flex items-center gap-4">
+                    {editIndex === idx ? (
+                      <>
+                        {/* Show only Save & Discard when editing */}
+                        <button
+                          onClick={() => handleSaveClick(fu, idx)}
+                          className="text-green-600 hover:text-green-700 hover:bg-green-50 px-3 py-1.5 rounded-lg transition-all duration-200 text-xs font-medium cursor-pointer"
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={() => {
+                            setEditText(fu.follow_up_message); // restore original
+                            setEditIndex(null);
+                          }}
+                          className="text-gray-500 hover:text-gray-700 hover:bg-gray-50 px-3 py-1.5 rounded-lg transition-all duration-200 text-xs font-medium cursor-pointer"
+                        >
+                          Discard
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        {/* Show time & status when NOT editing */}
+                        <span className="text-xs text-gray-500 font-medium">
+                          {fu.sent_at && fu.sent_at !== "None"
+                            ? `${formatDateTime(fu.sent_at)}`
+                            : fu.scheduled_for
+                            ? `${formatDateTime(fu.scheduled_for)}`
+                            : "Not scheduled"}
+                        </span>
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full font-medium ${getStatusColor(
+                            fu.status
+                          )}`}
+                        >
+                          {fu.status}
+                        </span>
+
+                        {fu.status.toLowerCase() !== "sent" && (
+                          <button
+                            onClick={() => handleEditClick(idx, fu.follow_up_message)}
+                            className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-all duration-200 text-xs font-medium cursor-pointer"
+                          >
+                            Edit
+                          </button>
+                        )}
+                      </>
+                    )}
                   </div>
                 </div>
-                <div className="text-sm text-gray-700 whitespace-pre-line mb-3 bg-gray-50 p-3 rounded-lg border">
-                  {fu.follow_up_message}
-                </div>
+
+                {/* Follow-up message */}
+                {editIndex === idx ? (
+                  <textarea
+                    className="w-full text-sm text-gray-700 border rounded-lg p-2"
+                    rows={3}
+                    value={editText}
+                    onChange={(e) => setEditText(e.target.value)}
+                  />
+                ) : (
+                  <div className="text-sm text-gray-700 whitespace-pre-line mb-3 bg-gray-50 p-3 rounded-lg border">
+                    {fu.follow_up_message}
+                  </div>
+                )}
               </li>
             ))}
           </ul>
         )}
       </div>
+
     </div>
   );
+}
+
+
+function formatFileSize(sizeInBytes) {
+  if (sizeInBytes < 1024 * 1024) {
+    // Show in KB
+    return `${(sizeInBytes / 1024).toFixed(1)} KB`;
+  } else {
+    // Show in MB
+    return `${(sizeInBytes / (1024 * 1024)).toFixed(1)} MB`;
+  }
 }

@@ -24,6 +24,10 @@ const nextConfig = {
         source: '/scheduler',
         destination: '/home/scheduler',
       },
+      {
+        source: '/mails/:mail_id',
+        destination: '/home/mails/:mail_id',
+      }
     ];
   },
 };
