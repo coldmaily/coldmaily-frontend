@@ -52,7 +52,24 @@ export default function HomeLayout({ children }) {
       <div className="flex h-screen w-full">
         {/* Sidebar */}
         <aside className="w-58 bg-[#0F172A] text-white fixed h-full px-4 py-4">
-          <div className="text-2xl font-bold mb-8 ml-8">ColdMaily</div>
+          <div className="flex items-center mb-8 ml-8 text-2xl font-bold">
+            <img
+              src="/coldmaily_logo.jpeg"
+              className="w-9 h-6 mr-5 ml-2"
+            />
+            <span
+              style={{
+                background: "linear-gradient(90deg, #f4f5f7, #458cca)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                textFillColor: "transparent",
+              }}
+            >
+              ColdMaily
+            </span>
+          </div>
+
           <nav className="flex flex-col gap-2 pl-4">
             {navItems.map((item) => (
               <Link
@@ -65,6 +82,7 @@ export default function HomeLayout({ children }) {
             ))}
           </nav>
         </aside>
+
 
         {/* Main content area */}
         <div className="flex flex-col flex-1 ml-58">

@@ -132,18 +132,19 @@ export default function MailDetail({ mail }) {
 
         {/* Attachments (if any) */}
         {mail.attachments && mail.attachments.length > 0 && (
-          <div className="mt-5 bg-gray-50 rounded-lg border border-gray-200 p-2 space-y-2 w-auto inline-block">
+          <div className="mt-5 flex flex-col gap-3">
             {mail.attachments.map((att, index) => (
               <div
                 key={index}
-                className="flex items-center gap-2 truncate"
+                className="bg-gray-50 rounded-lg border border-gray-200 p-2 w-auto max-w-xs flex items-center justify-between"
               >
                 <span className="truncate text-gray-800">{att.filename}</span>
-                <span className="text-gray-700 text-xs">{formatFileSize(att.size)}</span>
+                <span className="text-gray-700 text-xs ml-2">{formatFileSize(att.size)}</span>
               </div>
             ))}
           </div>
         )}
+
       </div>
 
       {/* Follow-ups */}
