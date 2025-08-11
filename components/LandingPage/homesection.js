@@ -1,6 +1,7 @@
 import React from "react";
 import FadeInSection from "../animations/FadeInSection";
 import AnimatedSubtext from "../animations/AnimatedSubtext";
+import { redirectToGoogleLogin } from "@/libapi/api";
 
 const HomeSection = () => {
   return (
@@ -18,7 +19,7 @@ const HomeSection = () => {
 
       {/* CTA Button */}
       <div className="mb-16">
-        <button className="px-6 py-3 cursor-pointer bg-[#D5D5D5] text-[#101828] text-lg font-semibold rounded-lg transition-all hover:bg-white">
+        <button onClick={redirectToGoogleLogin} className="px-6 py-3 cursor-pointer bg-[#D5D5D5] text-[#101828] text-lg font-semibold rounded-lg transition-all hover:bg-white">
           Start Cold Mailing
         </button>
       </div>
@@ -27,11 +28,11 @@ const HomeSection = () => {
       <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-7xl px-6 md:px-12 gap-50 mt-15">
         
         {/* Left Side - Image */}
-        <FadeInSection direction="left" delay={0.4} className="w-full md:w-2/5 flex justify-center">
+        <FadeInSection direction="left" delay={0.4} className="w-full md:w-2/5 flex justify-center mr-15">
           <img 
-            src="/cold-image-vector.png" // Replace with actual image
+            className="max-w-sm md:max-w-md md:h-66 rounded-lg"
+            src="/coldmaily_logo.jpeg" // Replace with actual image
             alt="ColdMaily Automation"
-            className="max-w-sm md:max-w-md rounded-lg"
           />
         </FadeInSection>
 

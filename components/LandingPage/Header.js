@@ -9,7 +9,23 @@ const Header = () => {
           
           {/* Left - Logo (Pushed More Left) */}
           <div className="flex-1">
-            <h1 className="text-2xl font-bold">ColdMaily</h1>
+          <div className="flex items-center ml-8 text-2xl font-bold">
+            <img
+              src="/coldmaily_logo.jpeg"
+              className="w-9 h-6 mr-5 ml-2"
+            />
+            <span
+              style={{
+                background: "linear-gradient(90deg, #f4f5f7, #458cca)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                textFillColor: "transparent",
+              }}
+            >
+              ColdMaily
+            </span>
+          </div>
           </div>
   
           {/* Center - Navigation Tabs (Centered) */}
