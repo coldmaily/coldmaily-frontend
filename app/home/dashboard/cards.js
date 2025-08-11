@@ -20,13 +20,21 @@ export default function DashboardCards({ totalMails, followUps }) {
           textColor="text-white"
           onClick={() => setShowCompose(true)}
         />
-        <ActionCard
-          title="Start Campaign"
-          icon={Rocket}
-          bgColor="bg-green-500"
-          textColor="text-white"
-          onClick={() => router.push("/home/campaigns")}
-        />
+        <div className="relative">
+          {/* Coming Soon Badge */}
+          <span className="absolute top-2 right-2 bg-red-700 text-white text-xs font-bold px-1 py-1 rounded-md">
+            Coming Soon
+          </span>
+
+          <ActionCard
+            title="Start Campaign"
+            icon={Rocket}
+            bgColor="bg-green-500"
+            textColor="text-white"
+            // onClick={() => router.push("/home/campaigns")}
+          />
+        </div>
+
         <StatCard
           icon={Send}
           value={totalMails}

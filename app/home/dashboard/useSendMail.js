@@ -54,10 +54,19 @@ export function useSendMail(onSuccessClose = null) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: name === "no_of_follow_up" ? parseInt(value || "0", 10) : value,
-    }));
+
+    // Check limit for follow-ups
+    if (name === "no_of_follow_up") {
+      const numValue = parseInt(value || "0", 10);
+      if (numValue > 10) {
+        toast.error("Cannot exceed more than 10 follow-ups");
+        return; // Stop update
+      }
+      setForm((prev) => ({ ...prev, [name]: numValue }));
+      return;
+    }
+
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleFileChange = (e) => {
@@ -106,7 +115,7 @@ export function useSendMail(onSuccessClose = null) {
       formData.append("subject", form.subject);
       formData.append("body", form.body);
       formData.append("no_of_follow_up", String(count));
-      formData.append("follow_up_strategy",strategy);
+      formData.append("follow_up_strategy", strategy);
       formData.append("follow_up_delays", JSON.stringify(delays));
       formData.append("category", category);
       formData.append("is_attachment", form.is_attachment ? "true" : "false");
