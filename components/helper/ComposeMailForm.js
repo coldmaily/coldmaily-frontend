@@ -167,7 +167,7 @@ export default function ComposeMailForm({ onClose, onMinimize, onMaximize }) {
             <option value="standard">Standard (Day 2, 5, 8, 12...)</option>
             <option value="every_1_day">Every 1 Day</option>
             <option value="every_2_days">Every 2 Days</option>
-            <option value="custom">Custom</option>
+            {/* <option value="custom">Custom</option> */}
           </select>
         </div>
       </div>
