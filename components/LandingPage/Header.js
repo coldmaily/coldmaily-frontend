@@ -19,7 +19,7 @@ const Header = () => {
                 background: "linear-gradient(90deg, #f4f5f7, #458cca)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
+                backgroundClip: "text", 
                 textFillColor: "transparent",
               }}
             >
