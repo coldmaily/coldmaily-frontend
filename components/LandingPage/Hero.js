@@ -2,18 +2,33 @@
 import FadeInSection from "../animations/FadeInSection";
 import AnimatedSubtext from "../animations/AnimatedSubtext"; // Import the new component
 import { FaBullseye, FaCalendarAlt, FaPenFancy, FaSyncAlt, FaHandshake, FaBriefcase, FaBullhorn, FaRocket } from "react-icons/fa";
-import FeatureSection from "./featuresection";
-import HomeSection from "./homesection";
+import WhyUseUs from "./whyuseus";
+import ModernSaaSHomepage from "./homesection";
 import ScrollUseCases from "./UseCaseCarousel";
-import StatsSection from "./statsection";
-
+import HowItWorks from "./howitworks";
+import KeyFeatures from "./features";
+import FAQ from "./faq";
+import FinalCTA
+ from "./finalcta";
 const Hero = () => {
   return (
     <>
-    <HomeSection/>
-    <FeatureSection/>
+    <ModernSaaSHomepage/>
+    <WhyUseUs/>
     {/* <StatsSection/> */}
     <ScrollUseCases/>
+    {/* how it works */}
+    <HowItWorks/>
+    {/* Key Features & Benefits */}
+    <KeyFeatures/>
+    {/* FAQ */}
+    <FAQ/>
+    {/* Final CTA Banner */}
+    {/* <FinalCTA/> */}
+    {/* Contact us */}
+
+    {/* Footer */}
+
     </>
   );
 };
