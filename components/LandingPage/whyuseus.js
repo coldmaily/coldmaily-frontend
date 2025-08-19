@@ -44,7 +44,7 @@ const featureVariants = {
 
 const WhyUseUs = () => {
   return (
-    <section className="relative py-24 bg-gradient-to-br from-gray-50 via-white to-blue-50">
+    <section className="relative py-24 bg-gradient-to-br from-gray-50 via-white to-blue-50" id="why-us">
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-20 left-10 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-50" />

@@ -44,7 +44,7 @@ const useCases = [
 
 const ScrollUseCases = () => {
   return (
-    <section className="relative w-full py-24 bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden">
+    <section className="relative w-full py-24 bg-gradient-to-br from-gray-50 via-white to-gray-100 overflow-hidden" id="use-cases">
       
       {/* Subtle Background Elements */}
       <div className="absolute inset-0 opacity-30">
