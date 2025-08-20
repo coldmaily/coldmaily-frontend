@@ -4,11 +4,6 @@ import { useSendMail } from "@/app/home/dashboard/useSendMail";
 import { X, Minus, Maximize, ImageIcon, Loader2, Paperclip } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import dynamic from "next/dynamic";
-import "react-quill/dist/quill.snow.css";
-
-// Load ReactQuill dynamically (Next.js SSR safe)
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-
 
 export default function ComposeMailForm({ onClose, onMinimize, onMaximize }) {
   const {
