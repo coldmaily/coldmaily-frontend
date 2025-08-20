@@ -13,8 +13,8 @@ const navItems = [
   { name: "Dashboard", path: "/home" },
   { name: "Mails", path: "/mails" },
   // { name: "Campaigns", path: "/campaigns" },
-  { name: "Templates", path: "/templates" },
-  { name: "Scheduler", path: "/scheduler" },
+  // { name: "Templates", path: "/templates" },
+  // { name: "Scheduler", path: "/scheduler" },
 ];
 
 export default function HomeLayout({ children }) {

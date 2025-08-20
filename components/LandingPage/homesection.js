@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { redirectToGoogleLogin } from "@/libapi/api";
 
 // Mock components - replace with your actual components
 const FadeInSection = ({ children, direction = "up", delay = 0, className = "" }) => {
@@ -36,10 +37,6 @@ const AnimatedSubtext = () => {
       Transform your cold outreach with AI-powered automation that turns prospects into paying customers
     </p>
   );
-};
-
-const redirectToGoogleLogin = () => {
-  console.log("Redirecting to Google Login...");
 };
 
 const ModernSaaSHomepage = () => {
@@ -108,18 +105,26 @@ const ModernSaaSHomepage = () => {
           {/* CTA Section */}
           <FadeInSection direction="up" delay={0.8}>
             <div className="flex flex-col sm:flex-row items-center gap-4 mb-16">
-              <button 
-                onClick={redirectToGoogleLogin} 
-                className="group relative px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-lg font-semibold rounded-2xl shadow-2xl shadow-blue-500/25 transition-all duration-300 transform hover:scale-105 hover:shadow-blue-500/40"
-              >
-                <span className="relative z-10 flex items-center gap-3">
-                  Start Cold Mailing
-                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-purple-700 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </button>
+            <button
+              onClick={redirectToGoogleLogin}
+              className="group relative px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-lg font-semibold rounded-2xl shadow-2xl shadow-blue-500/25 transition-all duration-300 transform hover:scale-105 hover:shadow-blue-500/40 overflow-hidden"
+            >
+              {/* Overlay div behind the text and allows clicks */}
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-purple-700 rounded-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-300 pointer-events-none"></div>
+
+              <span className="relative z-10 flex items-center gap-3">
+                Start Cold Mailing
+                <svg
+                  className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </span>
+            </button>
+
               
               {/* <button className="px-10 py-5 bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white text-lg font-semibold rounded-2xl transition-all duration-300 flex items-center gap-3">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
