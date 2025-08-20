@@ -3,6 +3,12 @@
 import { useSendMail } from "@/app/home/dashboard/useSendMail";
 import { X, Minus, Maximize, ImageIcon, Loader2, Paperclip } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
+
+// Load ReactQuill dynamically (Next.js SSR safe)
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+
 
 export default function ComposeMailForm({ onClose, onMinimize, onMaximize }) {
   const {
@@ -175,16 +181,25 @@ export default function ComposeMailForm({ onClose, onMinimize, onMaximize }) {
       {/* Body */}
       <div className="flex-1 px-4 py-3 overflow-y-auto min-h-[200px]">
         {/* Textarea */}
-        <textarea
-          ref={textareaRef}
-          name="body"
-          value={form.body}
-          onChange={handleChange}
-          onFocus={() => setActiveField("body")}
-          onBlur={() => setActiveField(null)}
-          className="w-full min-h-[300px] outline-none resize-none text-sm text-gray-900 placeholder-gray-400"
-          placeholder="Compose email"
-        />
+        <div
+            ref={textareaRef}
+            name="body"
+            contentEditable
+            onInput={(e) =>
+              handleChange({
+                target: {
+                  name: "body",
+                  value: e.currentTarget.innerHTML, // store HTML instead of plain text
+                },
+              })
+            }
+            onFocus={() => setActiveField("body")}
+            onBlur={() => setActiveField(null)}
+            className="w-full min-h-[300px] outline-none text-sm text-gray-900 placeholder-gray-400"
+            placeholder="Compose email"
+            suppressContentEditableWarning={true}
+            dangerouslySetInnerHTML={{ __html: form.body }}
+          />
 
         {/* Gmail-style File Upload Preview */}
         {attachments.length > 0 && (
