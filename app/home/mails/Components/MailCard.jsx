@@ -3,6 +3,13 @@
 import Link from "next/link";
 import { formatDateTime } from "@/utils/formatDateTime";
 
+function stripHtml(html) {
+  if (!html) return "";
+  const tmp = document.createElement("div");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
+}
+
 export default function MailCard({ mail }) {
   const displayTime = mail.sent_at || mail.scheduled_for || "";
 
@@ -23,7 +30,7 @@ export default function MailCard({ mail }) {
           <div className="truncate w-240">
             <span className="font-semibold">{mail.subject}</span>
             <span className="mx-1 text-gray-500">-</span>
-            <span>{mail.body}</span>
+            <span>{stripHtml(mail.body)}</span>
           </div>
           <div className="ml-4 flex-shrink-0 text-xs text-gray-500 whitespace-nowrap">
             {formatDateTime(displayTime)}

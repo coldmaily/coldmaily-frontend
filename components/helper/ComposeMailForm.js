@@ -17,11 +17,11 @@ export default function ComposeMailForm({ onClose, onMinimize, onMaximize }) {
 
 
   useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + "px";
+    if (textareaRef.current && form.body !== textareaRef.current.innerHTML) {
+      textareaRef.current.innerHTML = form.body || "";
     }
   }, [form.body]);
+  
 
   const handleMinimize = () => {
     setIsMinimized(!isMinimized);
@@ -174,27 +174,42 @@ export default function ComposeMailForm({ onClose, onMinimize, onMaximize }) {
       </div>
 
       {/* Body */}
+      {/* Body */}
       <div className="flex-1 px-4 py-3 overflow-y-auto min-h-[200px]">
-        {/* Textarea */}
         <div
-            ref={textareaRef}
-            name="body"
-            contentEditable
-            onInput={(e) =>
-              handleChange({
-                target: {
-                  name: "body",
-                  value: e.currentTarget.innerHTML, // store HTML instead of plain text
-                },
-              })
-            }
-            onFocus={() => setActiveField("body")}
-            onBlur={() => setActiveField(null)}
-            className="w-full min-h-[300px] outline-none text-sm text-gray-900 placeholder-gray-400"
-            placeholder="Compose email"
-            suppressContentEditableWarning={true}
-            dangerouslySetInnerHTML={{ __html: form.body }}
-          />
+          ref={textareaRef}
+          contentEditable
+          dir="ltr"
+          style={{
+            direction: "ltr",
+            unicodeBidi: "plaintext",
+            textAlign: "left",
+          }}
+          onInput={(e) =>
+            handleChange({
+              target: {
+                name: "body",
+                value: e.currentTarget.innerHTML,
+              },
+            })
+          }
+          onFocus={(e) => {
+            setActiveField("body");
+            // place caret at end on focus
+            const range = document.createRange();
+            const sel = window.getSelection();
+            range.selectNodeContents(e.currentTarget);
+            range.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(range);
+          }}
+          onBlur={() => setActiveField(null)}
+          className="w-full min-h-[300px] outline-none text-sm text-gray-900 placeholder-gray-400"
+          suppressContentEditableWarning={true}
+        />
+
+
+
 
         {/* Gmail-style File Upload Preview */}
         {attachments.length > 0 && (
