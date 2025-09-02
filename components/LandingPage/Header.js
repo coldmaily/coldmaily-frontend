@@ -21,7 +21,8 @@ const Header = () => {
     { name: "Use Cases", href: "#use-cases" },
     { name: "How It Works", href: "#how-it-works" },
     { name: "Features", href: "#features" },
-    { name: "FAQ", href: "#faq" },
+    { name: "FAQ", href: "#faq" }, 
+    { name: "Privacy Policy", href: "/legal/privacy-policy" },
   ];
 
   const handleScrollToTop = () => {
