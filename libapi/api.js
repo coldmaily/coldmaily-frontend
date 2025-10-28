@@ -128,4 +128,20 @@ export async function getCurrentUser() {
   return fetcher("/auth/me");
 }
 
+export async function unsubscribeUser(token) {
+  try {
+    const res = await fetch(`${API_BASE_URL}/unsubscribe/${token}`, {
+      method: "POST",
+    });
+
+    if (!res.ok) {
+      throw new Error(`API error with status ${res.status}`);
+    }
+
+    return await res.json(); // optional, if your API returns JSON
+  } catch (err) {
+    console.error("Error in unsubscribeUser:", err);
+    throw err;
+  }
+}
 

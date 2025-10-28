@@ -27,5 +27,7 @@ export async function markAllNotificationsAsRead() {
 export async function logout() {
   return postFetcher('/logout');
 }
+
+
   
   
