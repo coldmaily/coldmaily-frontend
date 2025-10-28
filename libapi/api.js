@@ -145,3 +145,12 @@ export async function unsubscribeUser(token) {
   }
 }
 
+export async function getUserConsent() {
+  return fetcher("/user/consent");
+}
+
+export async function updateUserConsent(hasConsented) {
+  return putFetcher(`/user/consent?consent=${hasConsented}`);
+}
+
+
