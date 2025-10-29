@@ -129,20 +129,7 @@ export async function getCurrentUser() {
 }
 
 export async function unsubscribeUser(token) {
-  try {
-    const res = await fetch(`${API_BASE_URL}/unsubscribe/${token}`, {
-      method: "POST",
-    });
-
-    if (!res.ok) {
-      throw new Error(`API error with status ${res.status}`);
-    }
-
-    return await res.json(); // optional, if your API returns JSON
-  } catch (err) {
-    console.error("Error in unsubscribeUser:", err);
-    throw err;
-  }
+  return putFetcher(`/unsubscribe/${token}`);
 }
 
 export async function getUserConsent() {
