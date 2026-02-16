@@ -85,6 +85,22 @@ export async function postFetcher(endpoint, payload) {
   return requestWithAutoRefresh(`${API_BASE_URL}${endpoint}`, options);
 }
 
+// Delete
+export async function DeleteFetcher(endpoint, payload) {
+  const options = {
+    method: "DELETE",
+    credentials: "include",
+    headers: {},
+  };
+
+  if (payload !== undefined) {
+    options.headers["Content-Type"] = "application/json";
+    options.body = JSON.stringify(payload);
+  }
+
+  return requestWithAutoRefresh(`${API_BASE_URL}${endpoint}`, options);
+}
+
 // ✅ Multipart FormData POST (e.g., email attachments)
 export async function sendMailFormData(formData) {
   const url = `${API_BASE_URL}/send-mail`;
@@ -140,4 +156,31 @@ export async function updateUserConsent(hasConsented) {
   return putFetcher(`/user/consent?consent=${hasConsented}`);
 }
 
+// Campaign API
+export async function createCampaign(formData) {
+  const url = `${API_BASE_URL}/campaign/create`;
+  const options = {
+    method: "POST",
+    body: formData,
+    credentials: "include", // ✅ sends cookies
+    // ❌ DO NOT set headers for multipart/form-data
+  };
 
+  return requestWithAutoRefresh(url, options);
+}
+
+export async function getCampaignDetail(campaignID){
+  return fetcher(`/campaign/${campaignID}`);
+}
+
+export async function launchCampaign(campaignID){
+  return postFetcher(`/campaign/${campaignID}/launch`);
+}
+
+export async function deleteCampaign(campaignID){
+  return DeleteFetcher(`/campaign/${campaignID}`);
+}
+
+export async function list_all_campaigns(){
+  return fetcher(`/campaign`);
+}
