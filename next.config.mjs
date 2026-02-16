@@ -13,8 +13,16 @@ const nextConfig = {
         destination: '/home/mails',
       },
       {
-        source: '/campaigns',
-        destination: '/home/campaigns',
+        source: '/campaign',
+        destination: '/home/campaign',
+      },
+      {
+        source: '/campaign/create',
+        destination: '/home/campaign/create',
+      },
+      {
+        source: '/campaign/:campaign_id',
+        destination: '/home/campaign/:campaign_id',
       },
       {
         source: '/templates',

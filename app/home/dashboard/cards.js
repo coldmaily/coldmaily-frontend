@@ -23,7 +23,7 @@ export default function DashboardCards({ totalMails, followUps }) {
         <div className="relative">
           {/* Coming Soon Badge */}
           <span className="absolute top-2 right-2 bg-red-700 text-white text-xs font-bold px-1 py-1 rounded-md">
-            Coming Soon
+            New
           </span>
 
           <ActionCard
@@ -31,7 +31,7 @@ export default function DashboardCards({ totalMails, followUps }) {
             icon={Rocket}
             bgColor="bg-green-500"
             textColor="text-white"
-            // onClick={() => router.push("/home/campaigns")}
+            onClick={() => router.push("/campaign")}
           />
         </div>
 

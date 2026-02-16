@@ -63,7 +63,7 @@ export function StatCard({
 
         {/* Number + Label on the right */}
         <div className="flex flex-col items-center justify-center text-center">
-          <span className="text-3xl font-bold">{count}+</span>
+          <span className="text-3xl font-bold">{count}</span>
           <span className="text-sm mt-2 font-bold">{label}</span>
         </div>
       </div>

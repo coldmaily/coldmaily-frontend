@@ -13,7 +13,7 @@ import { getNotifications } from "@/libapi/dashboard";
 const navItems = [
   { name: "Dashboard", path: "/home" },
   { name: "Mails", path: "/mails" },
-  // { name: "Campaigns", path: "/campaigns" },
+  { name: "Campaign", path: "/campaign" },
   // { name: "Templates", path: "/templates" },
   // { name: "Scheduler", path: "/scheduler" },
 ];

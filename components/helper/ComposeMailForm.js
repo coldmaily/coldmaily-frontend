@@ -166,14 +166,18 @@ export default function ComposeMailForm({ onClose, onMinimize, onMaximize }) {
           >
             <option value="">Select Follow-Up Strategy</option>
             <option value="standard">Standard (Day 2, 5, 8, 12...)</option>
-            <option value="every_1_day">Every 1 Day</option>
-            <option value="every_2_days">Every 2 Days</option>
+            <option value="every_1">Every 1 Day</option>
+            <option value="every_2">Every 2 Day</option>
+            <option value="every_3">Every 3 Day</option>
+            <option value="every_4">Every 4 Day</option>
+            <option value="every_5">Every 5 Day</option>
+            <option value="every_6">Every 6 Day</option>
+            <option value="every_7">Every 7 Day</option>
             {/* <option value="custom">Custom</option> */}
           </select>
         </div>
       </div>
 
-      {/* Body */}
       {/* Body */}
       <div className="flex-1 px-4 py-3 overflow-y-auto min-h-[200px]">
         <div
@@ -207,9 +211,6 @@ export default function ComposeMailForm({ onClose, onMinimize, onMaximize }) {
           className="w-full min-h-[300px] outline-none text-sm text-gray-900 placeholder-gray-400"
           suppressContentEditableWarning={true}
         />
-
-
-
 
         {/* Gmail-style File Upload Preview */}
         {attachments.length > 0 && (
