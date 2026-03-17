@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import RichTextEditor from "@/components/helper/RichTextEditor";
+import { Link2, Paperclip, Loader2, X } from "lucide-react";
 import { motion } from "framer-motion";
 import { createCampaign } from "@/libapi/api";
 import {
@@ -31,17 +33,32 @@ export default function CreateCampaignPage() {
     is_attachment: false,
   });
 
-  const [csvFile, setCsvFile] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(1);
-  const textareaRef = useRef(null);
-  const [activeField, setActiveField] = useState(null);
-  useEffect(() => {
-    if (textareaRef.current && !textareaRef.current.innerHTML) {
-      textareaRef.current.innerHTML = form.body || "";
-    }
-    // run only once on mount
-  }, []);
+  const [csvFile,          setCsvFile]          = useState(null);
+  const [attachments,      setAttachments]      = useState([]);
+  const [uploadingFiles,   setUploadingFiles]   = useState([]);
+  const [loading,          setLoading]          = useState(false);
+  const [step,             setStep]             = useState(1);
+  const [showFormatting,   setShowFormatting]   = useState(true);
+  const richEditorRef = useRef(null);
+
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    setAttachments((prev) => [...prev, ...files]);
+    setForm((prev) => ({ ...prev, is_attachment: true }));
+  };
+
+  const handleRemoveFile = (indexToRemove) => {
+    const updated = attachments.filter((_, i) => i !== indexToRemove);
+    setAttachments(updated);
+    setForm((prev) => ({ ...prev, is_attachment: updated.length > 0 }));
+  };
+
+  const formatFileSize = (bytes) => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
   
 
 
@@ -82,7 +99,8 @@ export default function CreateCampaignPage() {
       fd.append("no_of_follow_up", String(form.no_of_follow_up));
       // fd.append("follow_up_delays", JSON.stringify(delays));
       fd.append("follow_up_strategy", form.follow_up_strategy);
-      fd.append("is_attachment", "false");
+      fd.append("is_attachment", attachments.length > 0 ? "true" : "false");
+      attachments.forEach((file) => fd.append("attachments", file));
       fd.append("file", csvFile);
 
       const data = await createCampaign(fd);
@@ -227,43 +245,71 @@ export default function CreateCampaignPage() {
                     Email Body <span className="text-red-500">*</span>
                   </label>
 
-                  <div className="border border-gray-200 rounded-xl bg-gray-50">
-                    <div
-                      ref={textareaRef}
-                      contentEditable
-                      dir="ltr"
-                      style={{
-                        direction: "ltr",
-                        unicodeBidi: "plaintext",
-                        textAlign: "left",
-                      }}
-                      onInput={(e) =>
-                        handleChange({
-                          target: {
-                            name: "body",
-                            value: e.currentTarget.innerHTML,
-                          },
-                        })
-                      }
-                      onFocus={(e) => {
-                        setActiveField("body");
-
-                        const range = document.createRange();
-                        const sel = window.getSelection();
-                        range.selectNodeContents(e.currentTarget);
-                        range.collapse(false);
-                        sel.removeAllRanges();
-                        sel.addRange(range);
-                      }}
-                      onBlur={() => setActiveField(null)}
-                      className="w-full min-h-[300px] px-4 py-3 outline-none text-sm text-gray-900"
-                      suppressContentEditableWarning={true}
-                    />
-                  </div>
+                  {/* Editor + mini action bar (same concept as compose window) */}
+                  <RichTextEditor
+                    ref={richEditorRef}
+                    value={form.body}
+                    onChange={handleChange}
+                    name="body"
+                    placeholder={`Hi {{first_name}},\n\nI came across {{company}} and was impressed by your work.\n\nI wanted to reach out because...`}
+                    minHeight="280px"
+                    showToolbar={showFormatting}
+                    footerSlot={
+                      <div className="flex items-center gap-2 px-3 py-2">
+                        <button
+                          type="button"
+                          title="Formatting options"
+                          onMouseDown={(e) => { e.preventDefault(); setShowFormatting((v) => !v); }}
+                          className={`w-9 h-9 rounded-full flex items-center justify-center text-sm font-semibold transition-colors ${
+                            showFormatting
+                              ? "bg-[#d3e3fd] text-[#1a73e8]"
+                              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                          }`}>
+                          Aa
+                        </button>
+                        <label htmlFor="campaign-attachment" title="Attach file"
+                          className="w-9 h-9 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-100 cursor-pointer transition-colors">
+                          <Paperclip className="h-4 w-4" />
+                          <input type="file" id="campaign-attachment" className="hidden" onChange={handleFileChange} />
+                        </label>
+                        <button
+                          type="button"
+                          title="Insert link"
+                          onMouseDown={(e) => { e.preventDefault(); richEditorRef.current?.openLink(); }}
+                          className="w-9 h-9 rounded-full flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors">
+                          <Link2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    }
+                  >
+                    {/* Attachment previews — above toolbar */}
+                    {attachments.length > 0 && (
+                      <div className="px-4 pt-1 pb-2 space-y-2">
+                        {attachments.map((file, idx) => (
+                          <div key={idx} className="p-2 border rounded bg-gray-100 flex items-center justify-between text-sm">
+                            <div className="flex items-center gap-2 truncate max-w-[80%]">
+                              {uploadingFiles.includes(file.name) ? (
+                                <>
+                                  <Loader2 className="h-4 w-4 animate-spin text-gray-500" />
+                                  <span className="text-gray-500 truncate">{file.name}</span>
+                                </>
+                              ) : (
+                                <a href={URL.createObjectURL(file)} download={file.name}
+                                  className="text-blue-600 hover:underline truncate" title={file.name}
+                                  target="_blank" rel="noopener noreferrer">
+                                  {file.name} ({formatFileSize(file.size)})
+                                </a>
+                              )}
+                            </div>
+                            <button onClick={() => handleRemoveFile(idx)} className="text-gray-500 hover:text-red-600 p-1">
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </RichTextEditor>
                 </div>
-
-
-                {/* Body */}
 
 
                 <div className="mt-4 p-3 bg-amber-50 rounded-xl border border-amber-200">
